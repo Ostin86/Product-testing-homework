@@ -60,8 +60,7 @@ class AddReviewPage(BasePage):
 
     def enter_text_in_your_review_field(self, text: str) -> None:
         your_review_field = self.get_your_review_field()
-        return your_review_field.send_keys(text)
-        pass
+        your_review_field.send_keys(text)
 
     def click_on_continue_button(self):
         self.get_continue_button().click()
@@ -72,7 +71,7 @@ class AddReviewPage(BasePage):
 
     def click_by_rating_radiobutton(self):
         self.get_rating_radiobutton().click()
-        pass
+        
 
     def wait_text_of_warning_presence(self) -> None:
         locator = By.CSS_SELECTOR, 'div.alert.alert-danger.alert-dismissible'
