@@ -5,23 +5,21 @@ from typing import List
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from pageobject.base_page import BasePage
+from product_info_model import ProductInfo
+from extract_price_func import extract_decimal_price
 
 
-def extract_decimal_price(text: str) -> Decimal:
-    """Функция, которая извлекает из строки цену"""
-
-    split_by_lines: List[str] = text.split("\n")
-    first_price_lines = split_by_lines[0].split(' ')
-    first_price = first_price_lines[0][1:]
-    first_price_without_punctuation = first_price.replace(",", "")
-
-    return Decimal(first_price_without_punctuation)
-
-
-@dataclass
-class ProductInfo:
-    name: str
-    price: Decimal
+class SearchPageLocator:
+    SEARCH_FIELD = By.CLASS_NAME, 'input-lg'
+    SEARCH_CRITERIA_FIELD = By.ID, 'input-search'
+    PRODUCT_NAME_FIELD = By.TAG_NAME, 'h4'
+    SEARCH_IN_PRODUCT_DESCTIPTION_CHECKBOX = By.ID, 'description'
+    FIND_BUTTON = By.CLASS_NAME, 'btn-default'
+    SEARCH_BUTTON = By.ID, 'button-search'
+    TEXT_ABOUT_PR0DUCT_THAT_DOESNT_EXIST = By.XPATH, ('//h2[text()="Products meeting the search '
+                                                      'criteria"]/following-sibling::p')
+    SEARCH_RESULTS = By.CLASS_NAME, 'product-layout'
+    PRICE = By.CLASS_NAME, 'price'
 
 
 class SearchPage(BasePage):
@@ -30,43 +28,43 @@ class SearchPage(BasePage):
         return 'http://54.183.112.233/index.php?route=prod%20uct/search'
 
     def get_search_field(self) -> WebElement:
-        search_field: WebElement = self.driver.find_element(By.CLASS_NAME, 'input-lg')
+        search_field: WebElement = self.driver.find_element(*SearchPageLocator.SEARCH_FIELD)
         return search_field
 
     def get_search_criteria_field(self) -> WebElement:
-        search_criteria_field: WebElement = self.driver.find_element(By.ID, 'input-search')
+        search_criteria_field: WebElement = self.driver.find_element(*SearchPageLocator.SEARCH_CRITERIA_FIELD)
         return search_criteria_field
 
     def get_product_name(self) -> str:
-        product_name: str = self.driver.find_element(By.TAG_NAME, 'h4').text
+        product_name: str = self.driver.find_element(*SearchPageLocator.PRODUCT_NAME_FIELD).text
         return product_name
 
     def get_search_in_product_description_checkbox(self) -> WebElement:
-        search_in_product_description_checkbox = self.driver.find_element(By.ID, 'description')
+        search_in_product_description_checkbox = self.driver.find_element(
+            *SearchPageLocator.SEARCH_IN_PRODUCT_DESCTIPTION_CHECKBOX)
         return search_in_product_description_checkbox
 
     def get_find_button(self) -> WebElement:
-        find_button = self.driver.find_element(By.CLASS_NAME, 'btn-default')
+        find_button = self.driver.find_element(*SearchPageLocator.FIND_BUTTON)
         return find_button
 
     def get_search_button(self) -> WebElement:
-        search_button = self.driver.find_element(By.ID, 'button-search')
+        search_button = self.driver.find_element(*SearchPageLocator.SEARCH_BUTTON)
         return search_button
 
     def get_text_about_product_that_doesnt_exist(self) -> str:
-        text_about_product_that_doesnt_exist = self.driver.find_element(By.XPATH,
-                                                                        '//h2[text()="Products meeting the search '
-                                                                        'criteria"]/following-sibling::p')
+        text_about_product_that_doesnt_exist = self.driver.find_element(
+            *SearchPageLocator.TEXT_ABOUT_PR0DUCT_THAT_DOESNT_EXIST)
         return text_about_product_that_doesnt_exist.text
 
     def get_search_results(self) -> List[ProductInfo]:
         """Метод, который возвращает список имен и цен для найденных продуктов"""
-        product_tags = self.driver.find_elements(By.CLASS_NAME, 'product-layout')
+        product_tags = self.driver.find_elements(*SearchPageLocator.SEARCH_RESULTS)
         products: List[ProductInfo] = []
 
         for product_div_tag in product_tags:
-            name: str = product_div_tag.find_element(By.TAG_NAME, 'h4').text
-            price_text: str = product_div_tag.find_element(By.CLASS_NAME, 'price').text
+            name: str = product_div_tag.find_element(*SearchPageLocator.PRODUCT_NAME_FIELD).text
+            price_text: str = product_div_tag.find_element(*SearchPageLocator.PRICE).text
             product = ProductInfo(
                 name=name,
                 price=Decimal(extract_decimal_price(price_text))
