@@ -6,3 +6,5 @@ from decimal import Decimal
 class ProductInfo:
     name: str
     price: Decimal
+    brand: str = None
+    code: str = None

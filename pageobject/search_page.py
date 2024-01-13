@@ -4,6 +4,9 @@ from typing import List
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 from pageobject.base_page import BasePage
 from product_info_model import ProductInfo
 from extract_price_func import extract_decimal_price
@@ -39,7 +42,7 @@ class SearchPage(BasePage):
         product_name: str = self.driver.find_element(*SearchPageLocator.PRODUCT_NAME_FIELD).text
         return product_name
 
-    def get_search_in_product_description_checkbox(self) -> WebElement:
+    def get_product_description_checkbox_search(self) -> WebElement:
         search_in_product_description_checkbox = self.driver.find_element(
             *SearchPageLocator.SEARCH_IN_PRODUCT_DESCTIPTION_CHECKBOX)
         return search_in_product_description_checkbox
@@ -52,7 +55,7 @@ class SearchPage(BasePage):
         search_button = self.driver.find_element(*SearchPageLocator.SEARCH_BUTTON)
         return search_button
 
-    def get_text_about_product_that_doesnt_exist(self) -> str:
+    def get_product_that_doesnt_exist_text(self) -> str:
         text_about_product_that_doesnt_exist = self.driver.find_element(
             *SearchPageLocator.TEXT_ABOUT_PR0DUCT_THAT_DOESNT_EXIST)
         return text_about_product_that_doesnt_exist.text
@@ -72,6 +75,14 @@ class SearchPage(BasePage):
             products.append(product)
         return products
 
+    def get_search_result_names(self) -> List[str]:
+        search_results = self.get_search_results()
+        search_result_names: list[str] = []
+        for search_result in search_results:
+            search_result_name = search_result.name
+            search_result_names.append(search_result_name)
+        return search_result_names
+
     def clear_search_field(self) -> None:
         search_field = self.get_search_field()
         search_field.clear()
@@ -80,21 +91,25 @@ class SearchPage(BasePage):
         search_criteria_field = self.get_search_criteria_field()
         search_criteria_field.clear()
 
-    def enter_search_request_in_search_field(self, request: str | int) -> None:
+    def enter_search_request_in_search_field(self, request: str) -> None:
         search_field: WebElement = self.get_search_field()
         search_field.send_keys(request)
 
-    def enter_search_request_in_search_criteria_field(self, request: str | int) -> None:
+    def enter_search_request_in_search_criteria_field(self, request: str) -> None:
         search_criteria_field: WebElement = self.get_search_criteria_field()
         search_criteria_field.send_keys(request)
 
     def click_by_search_in_product_description_checkbox(self) -> None:
-        search_in_product_description_checkbox = self.get_search_in_product_description_checkbox()
+        search_in_product_description_checkbox = self.get_product_description_checkbox_search()
         search_in_product_description_checkbox.click()
 
     def click_by_find_button(self) -> None:
         find_button = self.get_find_button()
+        wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
+        wait.until(EC.element_to_be_clickable(SearchPageLocator.FIND_BUTTON))
         find_button.click()
 
     def click_by_search_button(self) -> None:
+        wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
+        wait.until(EC.element_to_be_clickable(SearchPageLocator.SEARCH_BUTTON))
         self.get_search_button().click()
