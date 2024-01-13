@@ -31,7 +31,7 @@ class SearchPageTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Действия после теста"""
+        """Действия после тестов"""
         cls.driver.quit()
 
     def test_search_results_with_apple_request(self):

@@ -38,10 +38,6 @@ class SearchPage(BasePage):
         search_criteria_field: WebElement = self.driver.find_element(*SearchPageLocator.SEARCH_CRITERIA_FIELD)
         return search_criteria_field
 
-    def get_product_name(self) -> str:
-        product_name: str = self.driver.find_element(*SearchPageLocator.PRODUCT_NAME_FIELD).text
-        return product_name
-
     def get_product_description_checkbox_search(self) -> WebElement:
         search_in_product_description_checkbox = self.driver.find_element(
             *SearchPageLocator.SEARCH_IN_PRODUCT_DESCTIPTION_CHECKBOX)

@@ -36,59 +36,32 @@ class ShoppingCartTest(unittest.TestCase):
         cls.driver.quit()
 
     def test_adding_necessary_amount_product_into_cart(self):
-        """Тест на добавление необходимого количества одного из товаров в корзину"""
+        """Добавление необходимого количества одного из товаров в корзину"""
         self.first_product_page.open()
         self.first_product_page.clear_quantity_field()
         self.first_product_page.add_amount_of_products_in_quantity_field(self.samsung_product_amount)
         self.first_product_page.click_on_add_to_cart_button()
         actual_result: str = self.first_product_page.get_success_message_about_adding_product_into_shopping_cart_text()
         expected_result: str = self.successful_adding_samsung_product_to_cart_message
-        self.shopping_cart_page.open()
-        self.shopping_cart_page.click_on_remove_buttons()
         self.assertEqual(expected_result, actual_result)
 
-    def test_adding_one_product_into_shopping_cart(self):
-        """Тест на добавление одного товара в корзину"""
+        """Добавление одного товара в корзину"""
         self.second_product_page.open()
         self.second_product_page.clear_quantity_field()
         self.second_product_page.add_amount_of_products_in_quantity_field(self.initial_product_amount)
         self.second_product_page.click_on_add_to_cart_button()
         actual_result: str = self.second_product_page.get_success_message_about_adding_product_into_shopping_cart_text()
         expected_result: str = self.successful_adding_hp_product_to_cart_message
-        self.shopping_cart_page.open()
-        self.shopping_cart_page.click_on_remove_buttons()
         self.assertEqual(expected_result, actual_result)
 
-    def test_adding_several_products_into_shopping_cart(self):
-        """Тест на добавление нескольких различных товаров в корзину"""
-        self.first_product_page.open()
-        self.first_product_page.clear_quantity_field()
-        self.first_product_page.add_amount_of_products_in_quantity_field(self.samsung_product_amount)
-        self.first_product_page.click_on_add_to_cart_button()
-        self.second_product_page.open()
-        self.second_product_page.clear_quantity_field()
-        self.second_product_page.add_amount_of_products_in_quantity_field(self.initial_product_amount)
-        self.second_product_page.click_on_add_to_cart_button()
-        self.shopping_cart_page.open_checkout_cart_url()
+        """Проверка общей стоимости товаров в корзине и её очистка"""
+        self.shopping_cart_page.open()
         actual_total_cost: Decimal = self.shopping_cart_page.get_total_sum_in_shopping_cart()
         actual_product_names: list[str] = self.shopping_cart_page.get__product_names_in_shopping_cart()
-        self.shopping_cart_page.open()
-        self.shopping_cart_page.click_on_remove_buttons()
         self.assertEqual(self.expected_total_cost, actual_total_cost)
         self.assertEqual(self.expected_product_names, actual_product_names)
 
-    def test_removing_products_from_shopping_cart(self):
-        """Тест на удаление товаров из корзины"""
-        self.first_product_page.open()
-        self.first_product_page.clear_quantity_field()
-        self.first_product_page.add_amount_of_products_in_quantity_field(self.samsung_product_amount)
-        self.first_product_page.click_on_add_to_cart_button()
-        self.second_product_page.open()
-        self.second_product_page.clear_quantity_field()
-        self.second_product_page.add_amount_of_products_in_quantity_field(self.initial_product_amount)
-        self.second_product_page.click_on_add_to_cart_button()
-        self.shopping_cart_page.open_checkout_cart_url()
-        self.shopping_cart_page.click_on_remove_buttons()
+        self.shopping_cart_page.clear_shopping_cart()
         expected_result = self.text_for_empty_shopping_cart
         actual_result = self.shopping_cart_page.get_empty_shopping_cart_text()
         self.assertEqual(expected_result, actual_result)

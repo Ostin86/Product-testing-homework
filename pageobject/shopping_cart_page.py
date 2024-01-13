@@ -1,7 +1,8 @@
 from decimal import Decimal
+from time import sleep
 from typing import List
 
-from selenium.common import StaleElementReferenceException, NoSuchElementException
+from selenium.common import StaleElementReferenceException, NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.expected_conditions import invisibility_of_element, text_to_be_present_in_element, \
@@ -43,9 +44,13 @@ class ShoppingCart(BasePage):
             product_names.append(element.text)
         return product_names
 
-    def get_remove_buttons_list(self) -> List[WebElement]:
-        remove_buttons: List[WebElement] = self.driver.find_elements(*ShoppingCartLocator.REMOVE_BUTTON)
-        return remove_buttons
+    # def get_remove_buttons_list(self) -> List[WebElement]:
+    #     remove_buttons: List[WebElement] = self.driver.find_elements(*ShoppingCartLocator.REMOVE_BUTTON)
+    #     return remove_buttons
+
+    def get_remove_button(self) -> WebElement:
+        remove_button: WebElement = self.driver.find_element(*ShoppingCartLocator.REMOVE_BUTTON)
+        return remove_button
 
     def get_empty_shopping_cart_text(self) -> str:
         text_for_empty_shopping_cart: str = self.driver.find_element(
@@ -59,10 +64,15 @@ class ShoppingCart(BasePage):
             *ShoppingCartLocator.ELEMENT_WITH_TOTAL_SUM_IN_SHOPPING_CART)
         return element_with_total_sum_in_shopping_cart
 
-    def click_on_remove_buttons(self) -> None:
-        elements: List[WebElement] = self.get_remove_buttons_list()
-        while len(elements) > 0:
+    def clear_shopping_cart(self):
+        while True:
             try:
-                elements[-1].click()
-            except StaleElementReferenceException:
-                elements: List[WebElement] = self.get_remove_buttons_list()
+                wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
+                wait.until(EC.element_to_be_clickable(ShoppingCartLocator.REMOVE_BUTTON))
+                remove_button = self.get_remove_button()
+                remove_button.click()
+                wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
+                wait.until(invisibility_of_element(remove_button))
+            except (NoSuchElementException, TimeoutException):
+                break
+
