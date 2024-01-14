@@ -43,7 +43,7 @@ class ProductPage(BasePage):
         return f'{self.product_base_url_text}{self.product_id}'
 
     def get_product_info(self) -> ProductInfo:
-        """Получение различных данных о товаре"""
+        """Получение различных данных о товаре и формирование элемента класса ProductInfo с необходимыми аттрибутами"""
 
         content_with_product_info: WebElement = self.driver.find_element(*ProductPageLocator.CONTENT_WITH_PRODUCT_INFO)
 
@@ -62,14 +62,6 @@ class ProductPage(BasePage):
 
         return actual_product
 
-    def get_product_description(self) -> str:
-        """Получение первого параграфа описания товара"""
-        raw_description_data: WebElement = self.driver.find_element(*ProductPageLocator.RAW_DESCRIPTION_DATA)
-
-        element_with_first_paragraph_text: str = raw_description_data.find_element(
-            *ProductPageLocator.ELEMENT_WITH_FIRST_PARAGRAPH_TEXT).text
-
-        return element_with_first_paragraph_text
 
     def get_reviews_tab(self) -> WebElement:
         reviews_tab: WebElement = self.driver.find_element(*ProductPageLocator.REVIEWS_TAB)
@@ -142,6 +134,15 @@ class ProductPage(BasePage):
 
         return success_message_element.text.strip('\n×')
 
+    def get_product_description(self) -> str:
+        """Получение первого параграфа описания товара"""
+        raw_description_data: WebElement = self.driver.find_element(*ProductPageLocator.RAW_DESCRIPTION_DATA)
+
+        element_with_first_paragraph_text: str = raw_description_data.find_element(
+            *ProductPageLocator.ELEMENT_WITH_FIRST_PARAGRAPH_TEXT).text
+
+        return element_with_first_paragraph_text
+
     def clear_quantity_field(self) -> None:
         self.get_quantity_field().clear()
 
@@ -164,7 +165,10 @@ class ProductPage(BasePage):
 
     def click_on_continue_button(self):
         self.get_continue_button().click()
-        self.wait_text_of_sending_review_status()
+        wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
+        wait.until(EC.any_of(
+            EC.visibility_of_element_located(ProductPageLocator.NOTIFICATION_ELEMENT),
+            EC.visibility_of_element_located(ProductPageLocator.NOTIFICATION_ELEMENT)))
 
     def click_on_reviews_tab(self) -> None:
         reviews_tab = self.get_reviews_tab()
@@ -196,8 +200,3 @@ class ProductPage(BasePage):
         wait.until(EC.visibility_of_element_located(
             ProductPageLocator.ADD_TO_CART_BUTTON))
 
-    def wait_text_of_sending_review_status(self) -> None:
-        wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
-        wait.until(EC.any_of(
-            EC.visibility_of_element_located(ProductPageLocator.NOTIFICATION_ELEMENT),
-            EC.visibility_of_element_located(ProductPageLocator.NOTIFICATION_ELEMENT)))

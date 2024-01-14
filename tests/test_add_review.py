@@ -1,9 +1,5 @@
 import unittest
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-
 from pageobject.product_page import ProductPage
 from webdriver_factory import WebDriverFactory
 

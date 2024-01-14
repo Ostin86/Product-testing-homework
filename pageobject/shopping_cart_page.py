@@ -1,12 +1,10 @@
 from decimal import Decimal
-from time import sleep
 from typing import List
 
 from selenium.common import StaleElementReferenceException, NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.expected_conditions import invisibility_of_element, text_to_be_present_in_element, \
-    invisibility_of_element_located
+from selenium.webdriver.support.expected_conditions import invisibility_of_element
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -44,10 +42,6 @@ class ShoppingCart(BasePage):
             product_names.append(element.text)
         return product_names
 
-    # def get_remove_buttons_list(self) -> List[WebElement]:
-    #     remove_buttons: List[WebElement] = self.driver.find_elements(*ShoppingCartLocator.REMOVE_BUTTON)
-    #     return remove_buttons
-
     def get_remove_button(self) -> WebElement:
         remove_button: WebElement = self.driver.find_element(*ShoppingCartLocator.REMOVE_BUTTON)
         return remove_button
@@ -75,4 +69,3 @@ class ShoppingCart(BasePage):
                 wait.until(invisibility_of_element(remove_button))
             except (NoSuchElementException, TimeoutException):
                 break
-

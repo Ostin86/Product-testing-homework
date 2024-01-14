@@ -57,7 +57,7 @@ class SearchPage(BasePage):
         return text_about_product_that_doesnt_exist.text
 
     def get_search_results(self) -> List[ProductInfo]:
-        """Метод, который возвращает список имен и цен для найденных продуктов"""
+        """Метод, который возвращает список элементов класса ProductInfo с именами и ценами для найденных продуктов"""
         product_tags = self.driver.find_elements(*SearchPageLocator.SEARCH_RESULTS)
         products: List[ProductInfo] = []
 
@@ -72,6 +72,7 @@ class SearchPage(BasePage):
         return products
 
     def get_search_result_names(self) -> List[str]:
+        """Метод, который возвращает список с именами найденных продуктов"""
         search_results = self.get_search_results()
         search_result_names: list[str] = []
         for search_result in search_results:

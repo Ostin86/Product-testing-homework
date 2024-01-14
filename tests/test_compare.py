@@ -1,10 +1,6 @@
 import unittest
-from time import sleep
 from typing import List
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 
 from pageobject.compare_page import ComparePage
 from pageobject.product_page import ProductPage

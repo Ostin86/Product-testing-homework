@@ -20,8 +20,12 @@ class ComparePage(BasePage):
     def get_url(self) -> str:
         return 'http://54.183.112.233/index.php?route=product/compare'
 
-    def get_added_to_comparison_products_names(self) -> List[str]:
+    def get_added_to_comparison_products(self) -> List[WebElement]:
         added_to_comparison_products = self.driver.find_elements(*ComparePageLocator.ADDED_TO_COMPARISON_BUTTON)
+        return added_to_comparison_products
+
+    def get_added_to_comparison_products_names(self) -> List[str]:
+        added_to_comparison_products = self.get_added_to_comparison_products()
         added_to_comparison_products_names: List[str] = [product.text for product in added_to_comparison_products]
         return added_to_comparison_products_names
 
@@ -49,5 +53,3 @@ class ComparePage(BasePage):
         for product_id in product_ids:
             product_remove_button: WebElement = self.get_product_remove_button(product_id)
             self.click_on_product_remove_button(product_remove_button)
-
-
