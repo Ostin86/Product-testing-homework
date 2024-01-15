@@ -29,7 +29,6 @@ class AddReviewTest(unittest.TestCase):
         self.product_page.open()
         self.product_page.click_on_reviews_tab()
 
-
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()

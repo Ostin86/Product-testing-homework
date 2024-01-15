@@ -28,9 +28,6 @@ class ShoppingCartTest(unittest.TestCase):
         cls.second_product_page = ProductPage(cls.driver, cls.second_product_id)
         cls.shopping_cart_page = ShoppingCart(cls.driver)
 
-    def setUp(self):
-        """Действия до теста"""
-
     @classmethod
     def tearDownClass(cls):
         """Действия после теста"""
@@ -58,7 +55,7 @@ class ShoppingCartTest(unittest.TestCase):
         """Проверка общей стоимости товаров в корзине и её очистка"""
         self.shopping_cart_page.open()
         actual_total_cost: Decimal = self.shopping_cart_page.get_total_sum_in_shopping_cart()
-        actual_product_names: list[str] = self.shopping_cart_page.get__product_names_in_shopping_cart()
+        actual_product_names: list[str] = self.shopping_cart_page.get_product_names_in_shopping_cart()
         self.assertEqual(self.expected_total_cost, actual_total_cost)
         self.assertEqual(self.expected_product_names, actual_product_names)
 

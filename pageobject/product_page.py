@@ -165,9 +165,8 @@ class ProductPage(BasePage):
     def click_on_continue_button(self):
         self.get_continue_button().click()
         wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
-        wait.until(EC.any_of(
-            EC.visibility_of_element_located(ProductPageLocator.NOTIFICATION_ELEMENT),
-            EC.visibility_of_element_located(ProductPageLocator.NOTIFICATION_ELEMENT)))
+        wait.until(
+            EC.visibility_of_element_located(ProductPageLocator.NOTIFICATION_ELEMENT))
 
     def click_on_reviews_tab(self) -> None:
         reviews_tab = self.get_reviews_tab()

@@ -29,14 +29,11 @@ class ShoppingCart(BasePage):
     def get_url(self):
         return 'http://54.183.112.233/index.php?route=checkout/cart'
 
-    def open_checkout_cart_url(self) -> None:
-        self.driver.get(self.get_url())
-
     def get_all_product_names_from_shopping_cart(self) -> List[WebElement]:
         product_names: List[WebElement] = self.driver.find_elements(*ShoppingCartLocator.PRODUCT_NAMES)
         return product_names
 
-    def get__product_names_in_shopping_cart(self) -> list[str]:
+    def get_product_names_in_shopping_cart(self) -> list[str]:
         product_names: list = []
         for element in self.get_all_product_names_from_shopping_cart():
             product_names.append(element.text)
@@ -69,3 +66,4 @@ class ShoppingCart(BasePage):
                 wait.until(invisibility_of_element(remove_button))
             except (NoSuchElementException, TimeoutException):
                 break
+

@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import List
 
 
 def extract_decimal_price(text: str) -> Decimal:

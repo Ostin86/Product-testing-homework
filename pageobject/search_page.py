@@ -110,3 +110,4 @@ class SearchPage(BasePage):
         wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
         wait.until(EC.element_to_be_clickable(SearchPageLocator.SEARCH_BUTTON))
         self.get_search_button().click()
+
