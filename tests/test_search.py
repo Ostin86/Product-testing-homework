@@ -21,6 +21,7 @@ class SearchPageTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        """Предустановка. Выполняется один раз перед всеми тестами"""
         cls.driver = WebDriverFactory.get_driver()
         cls.search_page = SearchPage(cls.driver)
 

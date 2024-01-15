@@ -15,6 +15,7 @@ class ProductPageTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        """Предустановка. Выполняется один раз перед всеми тестами"""
         cls.driver = WebDriverFactory.get_driver()
         cls.product_page = ProductPage(cls.driver, cls.test_product_id)
 

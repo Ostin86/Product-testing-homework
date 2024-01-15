@@ -62,7 +62,6 @@ class ProductPage(BasePage):
 
         return actual_product
 
-
     def get_reviews_tab(self) -> WebElement:
         reviews_tab: WebElement = self.driver.find_element(*ProductPageLocator.REVIEWS_TAB)
         return reviews_tab
@@ -199,4 +198,3 @@ class ProductPage(BasePage):
         wait = WebDriverWait(self.driver, BasePage.TIME_OUT)
         wait.until(EC.visibility_of_element_located(
             ProductPageLocator.ADD_TO_CART_BUTTON))
-

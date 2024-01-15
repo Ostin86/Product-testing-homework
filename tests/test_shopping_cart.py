@@ -22,6 +22,7 @@ class ShoppingCartTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        """Предустановка. Выполняется один раз перед всеми тестами"""
         cls.driver = WebDriverFactory.get_driver()
         cls.first_product_page = ProductPage(cls.driver, cls.first_product_id)
         cls.second_product_page = ProductPage(cls.driver, cls.second_product_id)

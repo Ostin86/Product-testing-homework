@@ -19,6 +19,7 @@ class AddReviewTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        """Предустановка. Выполняется один раз перед всеми тестами"""
         cls.driver = WebDriverFactory.get_driver()
         cls.product_id: str = '42'
         cls.product_page = ProductPage(cls.driver, cls.product_id)
@@ -28,9 +29,13 @@ class AddReviewTest(unittest.TestCase):
         self.product_page.open()
         self.product_page.click_on_reviews_tab()
 
+
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
+
+    def tearDown(self) -> None:
+        self.driver.save_screenshot('test-reports/' + self.id() + '.png')
 
     def test_review_adding(self):
         """Тест на отправку отзыва без заполнения обязательных для этого полей"""

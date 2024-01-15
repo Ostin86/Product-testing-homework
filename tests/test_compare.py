@@ -18,6 +18,7 @@ class CompareTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        """Предустановка. Выполняется один раз перед всеми тестами"""
         cls.driver = WebDriverFactory.get_driver()
         cls.product_page_for_the_first_product = ProductPage(cls.driver, cls.first_product_id)
         cls.product_page_for_the_second_product = ProductPage(cls.driver, cls.second_product_id)
